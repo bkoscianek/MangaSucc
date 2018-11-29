@@ -2,6 +2,7 @@ import base_func as bf
 import web_func as wf
 import PySimpleGUI as sg
 
+
 # rows = []
 # rows.append([sg.Text("Enter manga name:")])
 # rows.append([sg.Input(do_not_clear=True), sg.OK()])
