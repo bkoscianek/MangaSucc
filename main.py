@@ -1,24 +1,9 @@
-import base_func as bf
 import web_func as wf
-import PySimpleGUI as sg
+import base_func as bf
 
-# rows = []
-# rows.append([sg.Text("Enter manga name:")])
-# rows.append([sg.Input(do_not_clear=True), sg.OK()])
-#
-# layout = rows
-#
-# app = sg.Window('example').Layout(layout)
-#
-# while True:
-#     event, val = app.Read()
-#     if event is None:
-#         break
-#     print(val)
-#
-# app.close()
 
+
+bf.get_to_dnl_folder()
 manga = wf.search_for_manga()
-chapters = wf.get_chapters(manga)
-chapters = wf.get_list_of_chapters(chapters, 'first', 'last')
+chapters = wf.select_chapters(manga)
 wf.download_chapters(chapters)
