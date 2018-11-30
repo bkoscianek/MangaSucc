@@ -21,7 +21,6 @@ def search_for_manga(name: str):
         for link in potential_div.find_all('a'):
             if not re.match(reg1, link.get('href')):
                 mangas[link.string] = link.get('href')
-                print("{}. {}".format(i, link.string))
                 i += 1
 
     return mangas
