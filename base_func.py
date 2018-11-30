@@ -29,7 +29,7 @@ def get_to_manga_folder(manga_name: str):
 
 
 def get_to_chapter_folder(chapter_name: str):
-    folder_name = make_valid_name(" ", chapter_name)
+    folder_name = make_valid_name(chapter_name)
     try:
         os.chdir("./" + folder_name)
     except OSError:

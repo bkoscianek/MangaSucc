@@ -8,10 +8,14 @@ rows.append([sg.Input(do_not_clear=True, key='_MANGA_NAME_'), sg.Button('SEARCH'
 rows.append([])
 rows.append([sg.Text("Select your manga:")])
 rows.append(
-    [sg.Listbox(values=[], size=(30, 5), key='_MANGAS_', select_mode='single'), sg.Button('NEXT')])
-rows.append([sg.OK()])
+    [sg.Listbox(values=[], size=(30, 5), key='_MANGAS_', select_mode=sg.SELECT_MODE_SINGLE), sg.Button('NEXT')])
+rows.append([sg.Text('Select a single chapter or first and last chapter that you want to download:')])
+rows.append([sg.Listbox(values=[], size=(30, 5), key='_CHAPTERS_', select_mode=sg.SELECT_MODE_EXTENDED), sg.Button('DOWNLOAD')])
 
 layout = rows
+
+manga = {}
+chapters = {}
 
 app = sg.Window('MangaSucc').Layout(layout).Finalize()
 
@@ -22,16 +26,27 @@ while True:
         break
     elif event == 'SEARCH':
         manga = wf.search_for_manga(values['_MANGA_NAME_'])
-        app.FindElement('_MANGAS_').Update(values=manga.keys())
+        app.FindElement('_MANGAS_').Update(values=list(manga.keys()))
         app.Refresh()
     elif event == 'NEXT':
-        choice = app.FindElement('_MANGAS_')
+        choice = values['_MANGAS_']
+        choice = choice[0]
 
-    event, values = app.Read()
+        chapters = wf.get_chapters(manga[choice])
+        app.FindElement('_CHAPTERS_').Update(values=list(chapters.keys()))
+        app.Refresh()
+    elif event == 'DOWNLOAD':
+        first_chapter = values['_CHAPTERS_'][1]
+        last_chapter = values['_CHAPTERS_'][0]
+        chapters_to_dnl = wf.get_list_of_chapters(chapters, first_chapter, last_chapter)
+
+        bf.get_to_manga_folder(choice)
+        wf.download_chapters(chapters_to_dnl)
+        app.Refresh()
+
     print(values)
 
 app.Close()
 
-chapters = wf.get_chapters(manga)
-chapters = wf.get_list_of_chapters(chapters, 'first', 'last')
-wf.download_chapters(chapters)
+
+
