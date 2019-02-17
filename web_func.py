@@ -81,15 +81,17 @@ def download_chapter(chapter_name: str, chapter_url: str):
 		img_names.append(img_name)
 
 	chapter_to_pdf(img_names, chapter_name)
-	os.chdir("..")
+
+
+# automatically exits current folder during chapter_to_pdf() function
 
 
 def chapter_to_pdf(image_names: list, chapter_name: str):
 	pdf = FPDF(orientation='P', unit='mm', format='A4')
 	for img in image_names:
 		pdf.add_page()
-		pdf.image(img, x=5, y=5, w=200, h=0)
+		pdf.image(img, x=5, y=0, w=200, h=0)
 
 	pdf_name = base_func.make_valid_name(chapter_name) + '.pdf'
-	print(pdf_name)
+	os.chdir("..")
 	pdf.output(pdf_name, 'F')
